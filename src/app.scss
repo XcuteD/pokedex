@@ -80,74 +80,194 @@ select {
 }
 
 // СТИЛИ ПРОЕКТА
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-.pokedex {
-  font-family:Montserrat, sans-serif;
-    overflow-y: scroll;
-    height: 100vh;
-    max-width: 1200px;
-    margin: 0 auto;
-    &::-webkit-scrollbar {
-      width: 0;
-    }
-    &__header {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-    &__title {
-      font-size: 40px;
-      background: linear-gradient(90deg, yellow 0%, white 0%);
-      padding: 0 10px;
-    }
-    &__separator {
-      height: 2px;
-      margin: 0 20px;
-      background-color: black;
-    }
-    &__section {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-        padding: 20px 20px 0 20px;
-    }
-    
-    &__card {
-        height: 300px;
-    }
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@font-face {
+  font-family: "PokeSolid";
+  src: local("Pokemon Solid"),
+    url("./fonts/Pokemon_Solid.ttf") format("truetype");
 }
-.pokemon {
 
-    &__img {
-        background-color: rgb(217, 217, 236);
-        height: 200px;
-        width: 200px;
-    }
-    &__img-item {
-        height: 100%;
-        width: 100%;
-    }
+$pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
+  0 4px 1px #2365b0, -4px -0 1px #2365b0, 4px -0 1px #2365b0, -4px 0 1px #2365b0,
+  4px 0 1px #2365b0, -1px -4px 1px #2365b0, 1px -4px 1px #2365b0,
+  -1px 4px 1px #2365b0, 1px 4px 1px #2365b0, -4px -1px 1px #2365b0,
+  4px -1px 1px #2365b0, -4px 1px 1px #2365b0, 4px 1px 1px #2365b0,
+  -2px -4px 1px #2365b0, 2px -4px 1px #2365b0, -2px 4px 1px #2365b0,
+  2px 4px 1px #2365b0, -4px -2px 1px #2365b0, 4px -2px 1px #2365b0,
+  -4px 2px 1px #2365b0, 4px 2px 1px #2365b0, -3px -4px 1px #2365b0,
+  3px -4px 1px #2365b0, -3px 4px 1px #2365b0, 3px 4px 1px #2365b0,
+  -4px -3px 1px #2365b0, 4px -3px 1px #2365b0, -4px 3px 1px #2365b0,
+  4px 3px 1px #2365b0, -4px -4px 1px #2365b0, 4px -4px 1px #2365b0,
+  -4px 4px 1px #2365b0, 4px 4px 1px #2365b0, -4px -4px 1px #2365b0,
+  4px -4px 1px #2365b0, -4px 4px 1px #2365b0, 4px 4px 1px #2365b0;
 
-    &__id {
-      opacity: 0.5;
-      font-size: 10px;
-      padding-left: 10px;
-      font-weight: bold;
-    }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.pokedex {
+  font-family: Montserrat, sans-serif;
+  overflow-y: scroll;
+  height: 100vh;
+  margin: 0 auto;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  &__menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  &__header {
+    max-width: 1200px;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+  }
+  &__title {
+    font-family: PokeSolid, sans-serif;
+    font-size: 40px;
+    color: #fdcf00;
+    text-shadow: $pokeShadow;
+    background: linear-gradient(90deg, yellow 0%, white 0%);
+    padding: 0 10px 15px 35px;
+  }
+  &__separator {
+    height: 2px;
+    margin: 0 20px;
+    background-color: black;
+  }
+  &__section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 20px 0 20px;
+    margin-top: 100px;
+  }
+  &__card {
+    height: 300px;
+    position: relative;
+    top: 0px;
+    transition: top 1s;
+  }
+  &__card_animate {
+    top: 0px;
+  }
+}
+.card {
+  &__img {
+    background-color: rgb(217, 217, 236);
+    height: 200px;
+    width: 200px;
+  }
+  &__img-item {
+    height: 100%;
+    width: 100%;
+  }
 
-    &__name {
-      text-transform: capitalize;
-      font-size: 20px;
-      font-weight: bold;
-      padding-top: 10px;
-      padding-left: 10px;
-    }
+  &__id {
+    opacity: 0.5;
+    font-size: 10px;
+    padding-left: 10px;
+    font-weight: bold;
+  }
 
-    &__type {
-    }
+  &__name {
+    text-transform: capitalize;
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
 
-    &__type-item {
-    }
+  &__type {
+    display: flex;
+    gap: 3px;
+    margin: 5px 0 0 10px;
+  }
+
+  &__type-item {
+    font-size: 14px;
+    padding: 0 5px;
+    background-color: blue;
+    border-radius: 5px;
+    text-transform: capitalize;
+    min-width: 80px;
+    text-align: center;
+  }
+  &__type-item_bug {
+    background: #729f40;
+    color: white;
+  }
+  &__type-item_dragon {
+    background: linear-gradient(180deg, #53a5cf 50%, #616161 50%);
+    color: white;
+  }
+  &__type-item_fairy {
+    background: #fdb9e9;
+    color: black;
+  }
+  &__type-item_fire {
+    background: #fc7d23;
+    color: white;
+  }
+  &__type-item_ghost {
+    background: #7b62a3;
+    color: white;
+  }
+  &__type-item_ground {
+    background: linear-gradient(180deg, #f7de3f 50%, #aa9741 50%);
+    color: black;
+  }
+  &__type-item_normal {
+    background: #f366b9;
+    color: black;
+  }
+  &__type-item_psychic {
+    background: #F366B9;
+    color: white;
+  }
+  &__type-item_steel {
+    background: #9eb8b8;
+    color: black;
+  }
+  &__type-item_dark {
+    background: #707070;
+    color: white;
+  }
+  &__type-item_electric {
+    background: #eed535;
+    color: black;
+  }
+  &__type-item_fighting {
+    background: #d56722;
+    color: white;
+  }
+  &__type-item_flying {
+    background: linear-gradient(180deg, #3ec7ef 50%, #bdb9b8 50%);
+    color: black;
+  }
+  &__type-item_grass {
+    background: #9bcc50;
+    color: black;
+  }
+  &__type-item_ice {
+    background: #51c3e7;
+    color: black;
+  }
+  &__type-item_poison {
+    background: #ba7fc9;
+    color: white;
+  }
+  &__type-item_rock {
+    background: #a38b20;
+    color: white;
+  }
+  &__type-item_water {
+    background: #4592c3;
+    color: white;
+  }
 }

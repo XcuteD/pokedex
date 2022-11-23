@@ -1,0 +1,157 @@
+.pokemon__stats p {
+  color: white;
+}
+.card__type {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pokemon {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+  &__content {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  &__stats {
+    display: flex;
+    gap: 40px;
+    max-width: 475px;
+    background-color: #30a7d7;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 30px;
+    justify-content: space-around;
+  }
+  &__img {
+    max-width: 475px;
+    background-color: #f2f2f2;
+  }
+
+  &__pagination {
+    display: flex;
+    gap: 5px;
+  }
+
+  &__title {
+    position: relative;
+    font-size: 40px;
+    text-align: center;
+    margin: 0 auto;
+    background-color: white;
+    max-width: 700px;
+    border-radius: 10px;
+  }
+
+  &__name {
+    text-transform: capitalize;
+    display: inline;
+    color: black;
+  }
+
+  &__id {
+    display: inline;
+    color: black;
+    opacity: 0.5;
+  }
+
+  &__button {
+    background-color: #a4a4a4;
+    width: 100%;
+    height: 120px;
+    border: none;
+  }
+  &__button-text {
+    margin-top: -60px;
+    position: relative;
+    font-size: 40px;
+    text-transform: capitalize;
+    z-index: 3;
+  }
+  &__prev {
+    position: relative;
+  }
+  &__prev::before {
+    content: "";
+    position: absolute;
+    height: 50px;
+    width: 58px;
+    top: 72px;
+    right: 323px;
+    background: white;
+    border-radius: 10px;
+    z-index: 1;
+  }
+  &__prev::after {
+    content: "";
+    position: absolute;
+    height: 58px;
+    width: 58px;
+    top: 54px;
+    right: 349px;
+    background: linear-gradient(162deg, #a4a4a4 80%, white 80%);
+    border-radius: 10px;
+    transform: rotate(-45deg);
+    z-index: 2;
+  }
+
+  &__next {
+    position: relative;
+  }
+  &__next::before {
+    content: "";
+    position: absolute;
+    height: 50px;
+    width: 58px;
+    top: 72px;
+    left: 322px;
+    background: white;
+    border-radius: 10px;
+    z-index: 1;
+  }
+  &__next::after {
+    content: "";
+    position: absolute;
+    height: 58px;
+    width: 58px;
+    top: 54px;
+    left: 348px;
+    background: linear-gradient(108deg, white 20%, #a4a4a4 20%);
+    border-radius: 10px;
+    transform: rotate(-45deg);
+    z-index: 2;
+  }
+
+  &__card {
+    margin-top: -55px;
+  }
+  &__flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__abilities-item {
+    text-transform: capitalize;
+  }
+  
+  &__gender-item {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+  }
+  &__gender-item_male {
+    background: url('./images/male.svg') no-repeat center/80% ;
+  }
+  &__gender-item_female {
+    background: url('./images/female.svg') no-repeat center/80% ;
+  }
+  &__type {
+    margin-top: 20px;
+  }
+  &__weaknesses {
+    margin-top: 20px;
+  }
+}
