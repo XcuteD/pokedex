@@ -156,6 +156,23 @@ $pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
   &__card_animate {
     top: 0px;
   }
+  &__load {
+    display: block;
+    margin: 20px auto;
+    border: 3px solid #2365b0;
+    border-radius: 10px;
+    background-color: #fdcf00;
+    color: #2365b0;
+    font-weight: 800;
+    transition: all 0.3s;
+  }
+  &__load:hover {
+    cursor: pointer;
+    border: 3px solid #fdcf00;
+    border-radius: 10px;
+    background-color: #2365b0;
+    color: #fdcf00;
+  }
 }
 .card {
   &__img {
@@ -191,8 +208,6 @@ $pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
 
   &__type-item {
     font-size: 14px;
-    padding: 0 5px;
-    background-color: blue;
     border-radius: 5px;
     text-transform: capitalize;
     min-width: 80px;
@@ -227,7 +242,7 @@ $pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
     color: black;
   }
   &__type-item_psychic {
-    background: #F366B9;
+    background: #f366b9;
     color: white;
   }
   &__type-item_steel {
@@ -269,5 +284,60 @@ $pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
   &__type-item_water {
     background: #4592c3;
     color: white;
+  }
+}
+
+@media (max-width: 680px) {
+  .pokedex {
+    &__menu {
+      padding-left: 40px;
+    }
+    &__card {
+      height: 150px;
+      width: 100px;
+    }
+    &__search {
+      display: flex;
+      flex-direction: column;
+    }
+    &__section {
+      margin-top: 90px;
+    }
+  }
+  .card {
+    &__img {
+      background-color: rgb(217, 217, 236);
+      height: 100px;
+      width: 100px;
+    }
+    &__name {
+      padding-top: 0;
+      font-size: 12px;
+    }
+    &__type-item {
+      font-size: 10px;
+      border-radius: 15px;
+      min-width: 0;
+      width: 43px;
+      text-transform: capitalize;
+      text-align: center;
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .pokedex {
+    &__menu {
+      padding-left: 0;
+      padding-bottom: 10px;
+      flex-direction: column;
+    }
+    &__section {
+      margin-top: 150px;
+    }
+    &__title {
+      margin-left: -20px;
+    }
   }
 }

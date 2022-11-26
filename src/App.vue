@@ -1,5 +1,5 @@
 <template>
-  <div @scroll="pokeAddOnScroll" class="pokedex">
+  <div class="pokedex">
     <div class="container">
       <div class="pokedex__header">
         <div class="pokedex__menu">
@@ -7,8 +7,9 @@
           <div class="pokedex__search">
             <label for="pokemon-search">Find your pokemon: </label>
             <input
-              v-model="inputField"
               @input="throttleInput"
+              v-bind:value="inputField"
+              v-on:input="inputField = $event.target.value"
               type="text"
               id="name"
               name="name"
@@ -69,6 +70,13 @@
           </div>
         </div>
       </div>
+      <button
+        class="pokedex__load"
+        v-if="!openedCard && coldPokemons.length > 0"
+        @click="this.hotLoad"
+      >
+        LOAD MORE ({{ coldPokemons.length }})
+      </button>
     </div>
   </div>
 </template>
@@ -167,12 +175,6 @@ export default {
           }, this);
         }, this);
       });
-    },
-    pokeAddOnScroll() {
-      let pokedex = document.querySelector(".pokedex");
-      if (pokedex.scrollTop + pokedex.clientHeight == pokedex.scrollHeight) {
-        this.hotLoad();
-      }
     },
     async hotLoad() {
       await this.coldLoad();
