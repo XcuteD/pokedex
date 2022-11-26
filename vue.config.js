@@ -1,3 +1,3 @@
-// module.exports = {
-//   publicPath: "pokedex/",
-// };
+module.exports = {
+  publicPath: "pokedex/",
+};
