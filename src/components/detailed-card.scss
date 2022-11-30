@@ -150,7 +150,8 @@
   &__gender-item_female {
     background: url("./images/female.svg") no-repeat center/80%;
   }
-  &__type, &__weaknesses {
+  &__type,
+  &__weaknesses {
     & p {
       font-weight: 800;
       padding-left: 10px;
@@ -182,7 +183,6 @@
     &__button-text {
       margin-top: -8vw;
       font-size: 4vw;
-      z-index: inherit;
     }
   }
 }
