@@ -104,6 +104,7 @@ $pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 .pokedex {
   font-family: Montserrat, sans-serif;

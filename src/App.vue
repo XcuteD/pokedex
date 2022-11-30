@@ -21,17 +21,6 @@
               size="15"
             />
           </div>
-          <!-- <div class="pokedex__filter">
-            <form>
-              <label for="pokemon-select">Sort by: </label>
-              <select name="pokemon" id="pokemon-select">
-                <option value="id" selected>ID</option>
-                <option value="coincidence">coincidence</option>
-                <option value="name">name</option>
-                <option value="type">type</option>
-              </select>
-            </form>
-          </div> -->
         </div>
         <div class="pokedex__separator"></div>
       </div>
@@ -121,12 +110,21 @@ export default {
     this.loadPokemonList();
   },
   methods: {
+    async loadPokemonList() {
+      await this.pokeGenderSet();
+      await this.pokeWeaknessesSet();
+      await this.lazyLoad();
+      await this.hotLoad();
+    },
+
     loadJson(url) {
       return fetch(url).then((response) => response.json());
     },
+
     async pokeGenderSet() {
       let genders = await this.loadJson(this.genderAPI);
       this.gendersCount = genders.count;
+
       for (let i = 1; i <= this.gendersCount; i++) {
         let gender = await this.loadJson(this.genderAPI + i);
         this.pokeGenders[gender.name] = new Set();
@@ -135,28 +133,18 @@ export default {
         }, this);
       }
     },
-    async pokeCategorySet(pokeName) {
-      let species = await this.loadJson(`${this.categoryAPI}${pokeName}`);
-      let category = species.genera[7].genus;
-      return category.split(" ").slice(0, -1).join(" ");
-    },
-    pokeGenderGet(pokeName) {
-      let gender = [];
-      if (this.pokeGenders.male.has(pokeName)) gender.push("male");
-      if (this.pokeGenders.female.has(pokeName)) gender.push("female");
-      if (this.pokeGenders.genderless.has(pokeName)) gender.push("genderless");
-      return gender;
-    },
+
     async pokeWeaknessesSet() {
       let promiseArr = [];
       let types = await this.loadJson(this.typeAPI);
+
       types.results.forEach(function (type) {
         this.pokeTypes.set(type.name, { url: type.url });
       }, this);
-
       this.pokeTypes.forEach(function (pokeType) {
         promiseArr.push(this.loadJson(pokeType.url));
       }, this);
+
       return Promise.all(promiseArr).then((types) => {
         types.forEach(function (type) {
           this.pokeTypes.set(type.name, { weaknesses: [], resistances: [] });
@@ -178,11 +166,32 @@ export default {
         }, this);
       });
     },
+
+    async lazyLoad() {
+      let pokePagination = await this.loadJson(this.pokePaginationAPI);
+      pokePagination = await this.loadJson(
+        `${this.pokePaginationAPI}?limit=${(this.pokemonCount =
+          pokePagination.count)}`
+      );
+
+      pokePagination.results.forEach(function (pokemon, index) {
+        this.pokeNames.push(pokemon.name);
+        this.lazyPokemons.push({
+          id: index + 1,
+          name: pokemon.name,
+          img: this.pokeDummyImage,
+          pokeAPI: pokemon.url,
+        });
+      }, this);
+      this.coldPokemons = [...this.lazyPokemons];
+    },
+
     async hotLoad() {
       await this.coldLoad();
       let limit = this.coldPokemons.length > 20 ? 20 : this.coldPokemons.length;
       this.hotPokemons.push(...this.coldPokemons.splice(0, limit));
     },
+
     coldLoad() {
       let promiseArr = [];
       let limit = this.coldPokemons.length > 20 ? 20 : this.coldPokemons.length;
@@ -238,6 +247,24 @@ export default {
         }, this);
       });
     },
+
+    pokeGenderGet(pokeName) {
+      let gender = [];
+
+      if (this.pokeGenders.male.has(pokeName)) gender.push("male");
+      if (this.pokeGenders.female.has(pokeName)) gender.push("female");
+      if (this.pokeGenders.genderless.has(pokeName)) gender.push("genderless");
+
+      return gender;
+    },
+
+    async pokeCategorySet(pokeName) {
+      let species = await this.loadJson(`${this.categoryAPI}${pokeName}`);
+      let category = species.genera[7].genus;
+
+      return category.split(" ").slice(0, -1).join(" ");
+    },
+
     pokeSearch() {
       this.coldPokemons = [];
       this.hotPokemons = [];
@@ -265,30 +292,7 @@ export default {
         searchResults = [];
       }
     },
-    async lazyLoad() {
-      let pokePagination = await this.loadJson(this.pokePaginationAPI);
-      pokePagination = await this.loadJson(
-        `${this.pokePaginationAPI}?limit=${(this.pokemonCount =
-          pokePagination.count)}`
-      );
 
-      pokePagination.results.forEach(function (pokemon, index) {
-        this.pokeNames.push(pokemon.name);
-        this.lazyPokemons.push({
-          id: index + 1,
-          name: pokemon.name,
-          img: this.pokeDummyImage,
-          pokeAPI: pokemon.url,
-        });
-      }, this);
-      this.coldPokemons = [...this.lazyPokemons];
-    },
-    async loadPokemonList() {
-      await this.pokeGenderSet();
-      await this.pokeWeaknessesSet();
-      await this.lazyLoad();
-      await this.hotLoad();
-    },
     openCard(pokemon) {
       this.openedCard = pokemon;
 
@@ -304,61 +308,24 @@ export default {
         this.prevCard = this.lazyPokemons[pokemon.id - 2];
       }
     },
+
     async updatePokemon(id) {
       if (id == 0) {
         this.coldPokemons = [];
         this.coldPokemons.push(this.lazyPokemons[this.lazyPokemons.length - 1]);
         await this.hotLoad();
-        // this.inputField = this.lazyPokemons[this.lazyPokemons.length - 1].name;
-        // this.pokeSearch();
         this.openCard(this.lazyPokemons[this.lazyPokemons.length - 1]);
-        // this.inputField = "";
       } else if (id == this.lazyPokemons.length + 1) {
         this.coldPokemons = [];
         this.coldPokemons.push(this.lazyPokemons[0]);
         await this.hotLoad();
-        // this.inputField = this.lazyPokemons[0].name;
-        // this.pokeSearch();
         this.openCard(this.lazyPokemons[0]);
-        // this.inputField = "";
       } else {
         this.coldPokemons = [];
         this.coldPokemons.push(this.lazyPokemons[id - 1]);
         await this.hotLoad();
-        // this.inputField = this.lazyPokemons[id - 1].name;
-        // this.pokeSearch();
         this.openCard(this.lazyPokemons[id - 1]);
-        // this.inputField = "";
       }
-
-      // console.log(id);
-      // if (id != this.lazyPokemons.length + 1 && id != 0) {
-      //   if (this.lazyPokemons[id - 1].img == this.pokeDummyImage) {
-      //     this.coldPokemons.push(this.lazyPokemons[id - 1]);
-      //     await this.hotLoad();
-      //   }
-      //   this.openedCard = this.lazyPokemons[id - 1];
-      // }
-
-      // if (id == this.lazyPokemons.length + 1) {
-      //   this.coldPokemons.push(this.lazyPokemons[0]);
-      //   await this.hotLoad();
-      //   this.openedCard = this.lazyPokemons[0];
-      //   this.nextCard = this.lazyPokemons[1];
-      //   this.prevCard = this.lazyPokemons[this.lazyPokemons.length - 1];
-      // } else {
-      //   this.nextCard = this.lazyPokemons[id];
-      // }
-
-      // if (id == 0) {
-      //   this.coldPokemons.push(this.lazyPokemons[this.lazyPokemons.length - 1]);
-      //   await this.hotLoad();
-      //   this.openedCard = this.lazyPokemons[this.lazyPokemons.length - 1];
-      //   this.prevCard = this.lazyPokemons[this.lazyPokemons.length - 2];
-      //   this.nextCard = this.lazyPokemons[0];
-      // } else {
-      //   this.prevCard = this.lazyPokemons[id - 2];
-      // }
     },
   },
 };
