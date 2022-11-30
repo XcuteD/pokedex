@@ -3,7 +3,9 @@
     <div class="container">
       <div class="pokedex__header">
         <div class="pokedex__menu">
-          <div class="pokedex__title" @click="openedCard = null">PoKeDeX</div>
+          <div class="pokedex__title" @click="this.openedCard = null">
+            PoKeDeX
+          </div>
           <div class="pokedex__search">
             <label for="pokemon-search">Find your pokemon: </label>
             <input
@@ -289,17 +291,74 @@ export default {
     },
     openCard(pokemon) {
       this.openedCard = pokemon;
-      this.nextCard = this.lazyPokemons[pokemon.id];
-      this.prevCard = this.lazyPokemons[pokemon.id - 2];
+
+      if (pokemon.id == this.lazyPokemons.length) {
+        this.nextCard = this.lazyPokemons[0];
+      } else {
+        this.nextCard = this.lazyPokemons[pokemon.id];
+      }
+
+      if (pokemon.id == 1) {
+        this.prevCard = this.lazyPokemons[this.lazyPokemons.length - 1];
+      } else {
+        this.prevCard = this.lazyPokemons[pokemon.id - 2];
+      }
     },
     async updatePokemon(id) {
-      if (this.lazyPokemons[id - 1].img == this.pokeDummyImage) {
+      if (id == 0) {
+        this.coldPokemons = [];
+        this.coldPokemons.push(this.lazyPokemons[this.lazyPokemons.length - 1]);
+        await this.hotLoad();
+        // this.inputField = this.lazyPokemons[this.lazyPokemons.length - 1].name;
+        // this.pokeSearch();
+        this.openCard(this.lazyPokemons[this.lazyPokemons.length - 1]);
+        // this.inputField = "";
+      } else if (id == this.lazyPokemons.length + 1) {
+        this.coldPokemons = [];
+        this.coldPokemons.push(this.lazyPokemons[0]);
+        await this.hotLoad();
+        // this.inputField = this.lazyPokemons[0].name;
+        // this.pokeSearch();
+        this.openCard(this.lazyPokemons[0]);
+        // this.inputField = "";
+      } else {
+        this.coldPokemons = [];
         this.coldPokemons.push(this.lazyPokemons[id - 1]);
         await this.hotLoad();
+        // this.inputField = this.lazyPokemons[id - 1].name;
+        // this.pokeSearch();
+        this.openCard(this.lazyPokemons[id - 1]);
+        // this.inputField = "";
       }
-      this.openedCard = this.lazyPokemons[id - 1];
-      this.nextCard = this.lazyPokemons[id];
-      this.prevCard = this.lazyPokemons[id - 2];
+
+      // console.log(id);
+      // if (id != this.lazyPokemons.length + 1 && id != 0) {
+      //   if (this.lazyPokemons[id - 1].img == this.pokeDummyImage) {
+      //     this.coldPokemons.push(this.lazyPokemons[id - 1]);
+      //     await this.hotLoad();
+      //   }
+      //   this.openedCard = this.lazyPokemons[id - 1];
+      // }
+
+      // if (id == this.lazyPokemons.length + 1) {
+      //   this.coldPokemons.push(this.lazyPokemons[0]);
+      //   await this.hotLoad();
+      //   this.openedCard = this.lazyPokemons[0];
+      //   this.nextCard = this.lazyPokemons[1];
+      //   this.prevCard = this.lazyPokemons[this.lazyPokemons.length - 1];
+      // } else {
+      //   this.nextCard = this.lazyPokemons[id];
+      // }
+
+      // if (id == 0) {
+      //   this.coldPokemons.push(this.lazyPokemons[this.lazyPokemons.length - 1]);
+      //   await this.hotLoad();
+      //   this.openedCard = this.lazyPokemons[this.lazyPokemons.length - 1];
+      //   this.prevCard = this.lazyPokemons[this.lazyPokemons.length - 2];
+      //   this.nextCard = this.lazyPokemons[0];
+      // } else {
+      //   this.prevCard = this.lazyPokemons[id - 2];
+      // }
     },
   },
 };

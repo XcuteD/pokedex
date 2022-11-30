@@ -7,6 +7,7 @@
       >
         <div class="pokemon__button-text">
           {{
+            "< " +
             prevPokemon.name.split("-").join(" ") +
             " №" +
             String(prevPokemon.id).padStart(3, "0")
@@ -21,7 +22,8 @@
           {{
             nextPokemon.name.split("-").join(" ") +
             " №" +
-            String(nextPokemon.id).padStart(3, "0")
+            String(nextPokemon.id).padStart(3, "0") +
+            "  >"
           }}
         </div>
       </button>
@@ -50,7 +52,10 @@
                 <p>Gender</p>
                 <div
                   class="pokemon__gender-item"
-                  v-if="pokemon.gender == 'genderless'"
+                  v-if="
+                    pokemon.gender[0] == 'genderless' ||
+                    pokemon.gender[0] == undefined
+                  "
                 >
                   Unknown
                 </div>
@@ -66,7 +71,7 @@
             <div class="pokemon__flex-wrapper">
               <div class="pokemon__category">
                 <p>Category</p>
-                {{ pokemon.category }}
+                {{ pokemon.category ?? "Unknown" }}
               </div>
               <div class="pokemon__abilities">
                 <p>Abilities</p>
@@ -80,29 +85,31 @@
               </div>
             </div>
           </div>
-          <div class="pokemon__type">
-            <p>Type</p>
-            <div class="card__type">
-              <div
-                class="card__type-item"
-                v-for="(type, index) in pokemon.types"
-                :key="index"
-                :class="`card__type-item_${type.name}`"
-              >
-                {{ type.name }}
+          <div class="pokemon__flex-wrapper">
+            <div class="pokemon__type">
+              <p>Type</p>
+              <div class="card__type">
+                <div
+                  class="card__type-item"
+                  v-for="(type, index) in pokemon.types"
+                  :key="index"
+                  :class="`card__type-item_${type.name}`"
+                >
+                  {{ type.name }}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="pokemon__weaknesses">
-            <p>Weakness</p>
-            <div class="card__type">
-              <div
-                class="card__type-item"
-                v-for="(weakness, index) in pokemon.weaknesses"
-                :key="index"
-                :class="`card__type-item_${weakness}`"
-              >
-                {{ weakness }}
+            <div class="pokemon__weaknesses">
+              <p>Weakness</p>
+              <div class="card__type">
+                <div
+                  class="card__type-item"
+                  v-for="(weakness, index) in pokemon.weaknesses"
+                  :key="index"
+                  :class="`card__type-item_${weakness}`"
+                >
+                  {{ weakness }}
+                </div>
               </div>
             </div>
           </div>
@@ -124,7 +131,6 @@ export default {
   },
   methods: {
     changePokemon(id) {
-      console.log("click");
       this.$emit("change-pokemon", id);
     },
   },
