@@ -26,6 +26,7 @@
       </div>
 
       <detailed-card
+        class="detailedCard"
         v-if="openedCard"
         :pokemon="openedCard"
         :nextPokemon="nextCard"
@@ -68,6 +69,13 @@
       >
         LOAD MORE ({{ coldPokemons.length }})
       </button>
+      <button
+        class="pokedex__load"
+        v-if="openedCard"
+        @click="this.openedCard = null"
+      >
+        LOOK MORE POKEMONS
+      </button>
     </div>
   </div>
 </template>
@@ -100,7 +108,7 @@ export default {
       openedCard: null,
       nextCard: null,
       prevCard: null,
-      throttleInput: throttle(this.pokeSearch, 300, {
+      throttleInput: throttle(this.pokeSearch, 500, {
         leading: false,
         trailing: true,
       }),
@@ -108,6 +116,10 @@ export default {
   },
   mounted() {
     this.loadPokemonList();
+  },
+  updated() {
+    let pokedex = document.querySelector(".pokedex");
+    pokedex.scrollTop = 0;
   },
   methods: {
     async loadPokemonList() {
@@ -266,12 +278,12 @@ export default {
     },
 
     pokeSearch() {
+      console.log("Поиск " + this.inputField);
       this.coldPokemons = [];
       this.hotPokemons = [];
 
       let searchResults = this.pokeNames.reduce(
         (res, el, index) => {
-          console.log(res);
           if (el.indexOf(this.inputField.toLowerCase()) == 0)
             return [[...res[0], index], [...res[1]]];
           else if (el.indexOf(this.inputField.toLowerCase()) > 0)

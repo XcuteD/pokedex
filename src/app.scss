@@ -128,6 +128,7 @@ $pokeShadow: -0 -4px 1px #2365b0, 0 -4px 1px #2365b0, -0 4px 1px #2365b0,
     z-index: 4;
   }
   &__title {
+    user-select: none;  
     font-family: PokeSolid, sans-serif;
     font-size: 40px;
     color: #fdcf00;
